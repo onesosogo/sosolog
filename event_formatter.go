@@ -7,8 +7,9 @@ import (
 )
 
 type Event struct {
-	Name  string
-	Color Color
+	Name   string
+	Color  Color
+	Hidden bool
 }
 
 type EventFormatter struct {
@@ -21,6 +22,9 @@ func (f *EventFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b = entry.Buffer
 	} else {
 		b = &bytes.Buffer{}
+	}
+	if checkEvent(f.Events, entry.Message) {
+		return b.Bytes(), nil
 	}
 	// 写入时间
 	time := entry.Time.Format(timestampFormat)

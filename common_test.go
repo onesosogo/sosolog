@@ -22,3 +22,23 @@ func Test_eventColorMessage(t *testing.T) {
 	fmt.Print(message)
 	fmt.Print("\n")
 }
+
+func Test_checkEvent(t *testing.T) {
+
+	events := []*Event{
+		{
+			Name:  "WEBRTC",
+			Color: Blue,
+		},
+		{
+			Name:   "SIGNAL",
+			Color:  Yellow,
+			Hidden: true,
+		},
+	}
+
+	message := checkEvent(events, "[新] [WEBRTC] dddsdfsd")
+	fmt.Print(message)
+	fmt.Print("\n")
+
+}

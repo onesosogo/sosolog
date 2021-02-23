@@ -100,3 +100,15 @@ func eventColorMessage(events []*Event, message string) string {
 	}
 	return message
 }
+
+func checkEvent(events []*Event, message string) bool {
+	for _, e := range events {
+		if e.Name != "" {
+			pattern := "[" + e.Name + "]"
+			if strings.Contains(message, pattern) && e.Hidden {
+				return true
+			}
+		}
+	}
+	return false
+}

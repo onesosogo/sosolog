@@ -4,14 +4,18 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"runtime"
 )
 
-type StaticFormatter struct {
-	CallerPrettyfier func(*runtime.Frame) (function string, file string)
+type Event struct {
+	Name  string
+	Color Color
 }
 
-func (f *StaticFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+type EventFormatter struct {
+	Events []*Event
+}
+
+func (f *EventFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var b *bytes.Buffer
 	if entry.Buffer != nil {
 		b = entry.Buffer
@@ -36,7 +40,8 @@ func (f *StaticFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	fmt.Fprintf(b, "%c[0;0;%dm%-14s%c[0m", 0x1B, Cyan, fileLine, 0x1B)
 	fmt.Fprintf(b, "%s", " --- ")
 	// 写入消息
-	fmt.Fprintf(b, "%s", entry.Message)
+	message := eventColorMessage(f.Events, entry.Message)
+	fmt.Fprintf(b, "%s", message)
 
 	b.WriteByte('\n')
 	return b.Bytes(), nil

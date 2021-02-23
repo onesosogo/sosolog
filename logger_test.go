@@ -1,6 +1,7 @@
 package sosolog
 
 import (
+	"github.com/sirupsen/logrus"
 	"testing"
 )
 
@@ -10,4 +11,5 @@ func TestNew(t *testing.T) {
 	Log.Warn("测试一下")
 	Log.Debug("测试一下")
 	Log.Error("测试一下")
+	logrus.Info("DDD")
 }
